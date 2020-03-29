@@ -19,6 +19,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 
 @Path("fruits")
@@ -27,9 +28,19 @@ import io.quarkus.panache.common.Sort;
 @Consumes("application/json")
 public class FruitResource {
 
+    PanacheQuery<Fruit> fruitQuery() {
+        return Fruit.find("SELECT f FROM Fruit f", Sort.by("name"));
+    }
+
+    @GET
+    @Path("count")
+    public long count() {
+        return fruitQuery().count();
+    }
+
     @GET
     public List<Fruit> get() {
-        return Fruit.listAll(Sort.by("name"));
+        return fruitQuery().list();
     }
 
     @GET

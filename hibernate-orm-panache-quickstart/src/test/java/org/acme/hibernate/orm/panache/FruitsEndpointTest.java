@@ -12,6 +12,16 @@ import io.quarkus.test.junit.QuarkusTest;
 public class FruitsEndpointTest {
 
     @Test
+    public void testCountAllFruits() {
+        //Count all, should be 3
+        given()
+                .when().get("/fruits/count")
+                .then()
+                .statusCode(200)
+                .body(containsString("3"));        
+    }
+
+    @Test
     public void testListAllFruits() {
         //List all, should have all 3 fruits the database has initially:
         given()
